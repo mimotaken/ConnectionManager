@@ -7,18 +7,18 @@ Add, retrieve, or remove event connections with the following simple methods. In
 ## 📖 Usage
 AddConnection
 ```lua
-:AddConnection(Connection: RBXScriptConnection, Path: string)
+:AddConnection(Connection: RBXScriptConnection, Path: string, Replace: boolean)
 ```
 # Connection: The RBXScriptConnection to store (e.g. from.Connect().).
 Path: Connection name. If this is not set, the connection name will be generated randomly.
+Replace: true or false. If this is true it will clean any path associated with the given path and clean it accordingling
 
 ```lua
-:GetConnection(Path: string, nodebug: boolean)
+:GetConnection(Path: string)
 ```
 # Retrieve a stored connection by its name (Path).
 
 Path: The name of the connection to retrieve.
-nodebug: defaults to false. When true, suppresses debug output.
 
 ```lua
 :GetAllConnections()
@@ -33,7 +33,7 @@ nodebug: defaults to false. When true, suppresses debug output.
 Path: The name of the connection to remove.
 
 ```lua
-:RemoveAllConnectionsStartsWith(Name: string)
+:RemoveConnectionsFromPath(Path: string)
 ```
 # Removes all the connections whose names start with the given string.
 

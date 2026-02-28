@@ -1,52 +1,74 @@
-## ConnectionManager
-Event Manager Module A lightweight utility for dealing with events efficiently.  
+## ConnectionsUtility
+
+Event Connections Utility Module — A lightweight utility for managing event connections efficiently.
 
 ## 🌟 Features
-Add, retrieve, or remove event connections with the following simple methods. Includes methods for removing all connections, or those matching a prefix. Prevents memory leaks by cleaning up unused events.
+
+Add, retrieve, or remove event connections with simple methods. Includes support for removing all connections, or those matching a specific path prefix. Prevents memory leaks by cleaning up unused events.
 
 ## 📖 Usage
-AddConnection
-```lua
+
+### AddConnection
+
+```luau
 :AddConnection(Connection: RBXScriptConnection, Path: string, Replace: boolean)
 ```
-# Connection: The RBXScriptConnection to store (e.g. from.Connect().).
-Path: Connection name. If this is not set, the connection name will be generated randomly.
-Replace: true or false. If this is true it will clean any path associated with the given path and clean it accordingling
 
-```lua
+Stores a connection in the active connections table.
+
+- **Connection**: The `RBXScriptConnection` to store (e.g. from `.Connect()`).
+- **Path**: The name to assign to the connection. Must be a valid string.
+- **Replace**: If `true`, any existing connection at the given path will be disconnected and replaced. If `false`, the function will exit without making changes if the path is already in use.
+
+> **Note:** Invalid arguments (non-RBXScriptConnection or non-string path) will trigger a warning and the connection will not be stored.
+
+### GetConnection
+
+```luau
 :GetConnection(Path: string)
 ```
-# Retrieve a stored connection by its name (Path).
 
-Path: The name of the connection to retrieve.
+Retrieves a stored connection by its name. Returns the connection if it exists, or `nil` if the path was not found.
 
-```lua
-:GetAllConnections()
-```
-# Returns a table of all the stored connections.
+- **Path**: The name of the connection to retrieve.
 
-```lua
+### RemoveConnection
+
+```luau
 :RemoveConnection(Path: string)
 ```
-# Removes and cleans up a connection by its name.
 
-Path: The name of the connection to remove.
+Removes and disconnects a connection by its name. If the connection exists and is still active, it will be disconnected to prevent memory leaks. The reference is then removed from the table.
 
-```lua
+- **Path**: The name of the connection to remove.
+
+### RemoveConnectionsFromPath
+
+```luau
 :RemoveConnectionsFromPath(Path: string)
 ```
-# Removes all the connections whose names start with the given string.
 
-# Example:
-If the following relationships are named Chicken, Cheese, Hamburger, and Class:
-RemoveAllConnectionsStartsWith("C") will clean up Chicken, Cheese, and Class.
-RemoveAllConnectionsStartsWith("CH") will clean up Chicken and Cheese.
-Note: This is case-sensitive.
+Removes and disconnects all connections whose names start with the given path string.
 
-```lua
+- **Path**: The prefix to match against connection names.
+
+**Example:**
+
+If the following connections are stored: `Chicken`, `Cheese`, `Hamburger`, and `Class`:
+
+- `RemoveConnectionsFromPath("C")` will clean up `Chicken`, `Cheese`, and `Class`.
+- `RemoveConnectionsFromPath("Ch")` will clean up `Chicken` and `Cheese`.
+
+> **Note:** This is case-sensitive.
+
+### RemoveAllConnections
+
+```luau
 :RemoveAllConnections()
 ```
-# Completely removes and cleans all stored connections.
 
-## 💡 Why Use ConnectionManager?
-Poor event handling in Roblox can result in memory leaks. ConnectionManager is a simple module that makes sure your events are always cleaned up and your memory doesn't leak, keeping your code clean and tidy. It's lightweight and perfect for projects of any size.
+Disconnects and removes all stored connections, then clears the entire active connections table.
+
+## 💡 Why Use ConnectionsUtility?
+
+Poor event handling in Roblox can result in memory leaks. ConnectionsUtility is a simple module that ensures your events are always properly cleaned up, keeping your code clean and your memory leak-free. It's lightweight and perfect for projects of any size.

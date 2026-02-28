@@ -26,7 +26,7 @@ function ConnectionsUtility:AddConnection(Connection: RBXScriptConnection, Path:
             return 
         end	
 	end
-
+	
 	-- Stores the new connection in the active connections table using the specified path.
 	Connections._ActiveConnections[Path] = Connection
 end
@@ -85,6 +85,23 @@ function ConnectionsUtility:RemoveConnectionsFromPath(Path: string)
 		ConnectionsUtility:RemoveConnection(ConnectionPath)
 	end
 end
+
+--// Initializes
+-- Creates a new thread to clean up the connections table.
+task.spawn(function()
+	-- Sets up a loop to clean up the connections table.
+	while true do
+		-- Waits for 60 seconds before cleaning up the connections table.
+		task.wait(60)
+		
+		-- Iterates through the connections table and disconnects any inactive connections.
+		for Path, Connection in Connections._ActiveConnections do
+			if not Connection.Connected then
+				Connections._ActiveConnections[Path] = nil
+			end
+		end
+	end
+end)
 
 --// Return Module
 return ConnectionsUtility
